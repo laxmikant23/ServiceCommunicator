@@ -3,4 +3,7 @@
     <string name="start">Start</string>
     <string name="stop">Stop</string>
     <string name="_30">30</string>
+    <string name="started_service_example">Started Service Example</string>
+    <string name="bind_service_example">Bind Service Example</string>
+    <string name="check_time">Check Time</string>
 </resources>

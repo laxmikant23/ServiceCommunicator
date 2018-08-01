@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ActivityStartService"/>
+        <activity android:name=".ActivityBindService"/>
         <service android:name=".TestServiceWithBroadcast"/>
+        <service android:name=".BindService"/>
     </application>
 
 </manifest>

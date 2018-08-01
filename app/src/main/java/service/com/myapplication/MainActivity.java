@@ -1,83 +1,37 @@
 package service.com.myapplication;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
+
+/**
+ * Created by laxmikant on 01/08/18.
+ */
 
 public class MainActivity extends Activity {
-    public static final String BROADCAST_ACTION = "service.com.broadcastreceiver";
-    private TextView counterTxt;
-    private MyBroadCastReceiver myBroadCastReceiver;
-    private Intent myServiceIntent;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initializeMembers();
-        registerMyReceiver();
-    }
-
-    private void initializeMembers() {
-        Button startCounter = findViewById(R.id.start);
-        Button stopCounter = findViewById(R.id.stop);
-        counterTxt = findViewById(R.id.textView);
-        myBroadCastReceiver = new MyBroadCastReceiver();
-        startCounter.setOnClickListener(new View.OnClickListener() {
+        /*Opens a example to send data from service using a BroadcastReceiver*/
+        findViewById(R.id.start_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startMyService();
+                Intent intent = new Intent(MainActivity.this,ActivityStartService.class);
+                startActivity(intent);
             }
         });
-        stopCounter.setOnClickListener(new View.OnClickListener() {
+
+        /*Opens a example for bind service*/
+
+        findViewById(R.id.bind_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (myServiceIntent != null) {
-                    stopService(myServiceIntent);
-                }
+                Intent intent = new Intent(MainActivity.this,ActivityBindService.class);
+                startActivity(intent);
             }
         });
-    }
-    private void startMyService() {
-        myServiceIntent = new Intent(this, TestServiceWithBroadcast.class);
-        startService(myServiceIntent);
-    }
-    /**
-     * This method is responsible to register an action to BroadCastReceiver
-     */
-    private void registerMyReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(BROADCAST_ACTION);
-        registerReceiver(myBroadCastReceiver, intentFilter);
-    }
-
-    class MyBroadCastReceiver extends BroadcastReceiver {
-        /*
-        * Receives the counter from the service*/
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getExtras() != null) {
-                long millisUntilFinished = intent.getIntExtra("countdown", 0);
-                counterTxt.setText(String.valueOf(millisUntilFinished));
-            }
-        }
-    }
-
-    /**
-     * This method called when this Activity finished
-     * Override this method to unregister MyBroadCastReceiver
-     */
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
-        // make sure to unregister your receiver after finishing of this activity
-        unregisterReceiver(myBroadCastReceiver);
     }
 }
