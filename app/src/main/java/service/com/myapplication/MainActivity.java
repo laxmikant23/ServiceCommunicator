@@ -11,30 +11,22 @@ import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends Activity {
-    private final String TAG = "MainActivity";
     public static final String BROADCAST_ACTION = "service.com.broadcastreceiver";
-
-    private Button startCounter;
-    private  Button stopCounter;
-
     private TextView counterTxt;
     private MyBroadCastReceiver myBroadCastReceiver;
     private Intent myServiceIntent;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         initializeMembers();
-
-
         registerMyReceiver();
     }
 
-    private void initializeMembers()
-    {
-        startCounter = findViewById(R.id.start);
-        stopCounter = findViewById(R.id.stop);
+    private void initializeMembers() {
+        Button startCounter = findViewById(R.id.start);
+        Button stopCounter = findViewById(R.id.stop);
         counterTxt = findViewById(R.id.textView);
         myBroadCastReceiver = new MyBroadCastReceiver();
         startCounter.setOnClickListener(new View.OnClickListener() {
@@ -46,44 +38,26 @@ public class MainActivity extends Activity {
         stopCounter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(myServiceIntent != null){
+                if (myServiceIntent != null) {
                     stopService(myServiceIntent);
                 }
             }
         });
     }
-    private void startMyService()
-    {
-        try
-        {
-            myServiceIntent = new Intent(this, TestServiceWithBroadcast.class);
-            startService(myServiceIntent);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
+    private void startMyService() {
+        myServiceIntent = new Intent(this, TestServiceWithBroadcast.class);
+        startService(myServiceIntent);
     }
-
     /**
      * This method is responsible to register an action to BroadCastReceiver
-     * */
+     */
     private void registerMyReceiver() {
-
-        try
-        {
-            IntentFilter intentFilter = new IntentFilter();
-            intentFilter.addAction(BROADCAST_ACTION);
-            registerReceiver(myBroadCastReceiver, intentFilter);
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(BROADCAST_ACTION);
+        registerReceiver(myBroadCastReceiver, intentFilter);
     }
-    class MyBroadCastReceiver extends BroadcastReceiver
-    {
+
+    class MyBroadCastReceiver extends BroadcastReceiver {
         /*
         * Receives the counter from the service*/
         @Override
@@ -98,7 +72,7 @@ public class MainActivity extends Activity {
     /**
      * This method called when this Activity finished
      * Override this method to unregister MyBroadCastReceiver
-     * */
+     */
     @Override
     protected void onDestroy() {
         super.onDestroy();
